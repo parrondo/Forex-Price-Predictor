@@ -4,10 +4,10 @@ from keras.layers.recurrent import LSTM
 from keras.models import Sequential
 import lstm, time
 import numpy as np
-import getData2
+#import getData2
 
 def main(pair, timeframe):
-	X_train, y_train, X_test, y_test = lstm.load_data(pair+'_'+timeframe+'_'+'history2.csv', 50, True)
+	X_train, y_train, X_test, y_test = lstm.load_data('BTC.csv', 50, True) #= lstm.load_data(pair+'_'+timeframe+'_'+'history2.csv', 50, True)
 
 	model = make_model(X_train, y_train)
 	
@@ -25,7 +25,7 @@ def main(pair, timeframe):
 	
 	inputs = []
 	i = 0
-	for line in reversed(open(pair+'_'+timeframe+'_'+'history2.csv').readlines()):
+	for line in reversed(open('BTC.csv').readlines()): #open(pair+'_'+timeframe+'_'+'history2.csv').readlines()):
 		if i == 0:
 			line.rstrip()  #ignoring since candle is incomplete
 		else:
@@ -61,11 +61,11 @@ def make_model(X_train, y_train):
 	start = time.time()
 	model.compile(loss='mse', optimizer='rmsprop')
 	print 'compilation time : ', time.time() - start
-	model.fit(X_train, y_train, batch_size=512, nb_epoch=25, validation_split=0.05)
+	model.fit(X_train, y_train, batch_size=512, nb_epoch=5, validation_split=0.05)
 	return model
 
 def predictNext(pair, timeframe):
-	getData2.getData(pair, timeframe)
+	#getData2.getData(pair, timeframe)
 	predicted, p0 = main(pair, timeframe)
 	print "predicted"
 	print predicted

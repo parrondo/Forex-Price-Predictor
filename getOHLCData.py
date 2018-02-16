@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 account = ""
 access_token = ""
-with open('./../config.json', 'r') as f:
+with open('config.json', 'r') as f:
 		config = json.load(f)
 		
 #environment = raw_input("Live or practice: ")
@@ -17,14 +17,14 @@ elif (environment == "practice"):
 	account = config['practiceAccount']
 	access_token = config['practiceToken']
 
-def getData(pair, timeframe):
+def getData(pair, timeframe, numDataPoints):
 	granularity = timeframe
 	count = 5000
 	oanda = oandapy.API(environment=environment, access_token=access_token)
 	end = datetime.utcnow()
-	print end
-	midpoint = "midpoint"
-	history = oanda.get_history(instrument = pair, granularity=granularity, count=count, candleFormat=midpoint, end = end.isoformat('T'))
+	
+	#print end
+	#history = oanda.get_history(instrument = pair, granularity=granularity, count=count, candleFormat="midpoint", end = end.isoformat('T'))
 	#use to get more history sincne max is 5k in one call
 	if timeframe == "M1":
 		timeDelta = timedelta(minutes=count)
@@ -32,7 +32,13 @@ def getData(pair, timeframe):
 		timeDelta = timedelta(seconds=count)
 	elif timeframe == "H1":
 		timeDelta = timedelta(hours=count)
-	end = end - timeDelta
+	start = end - timeDelta
+	
+
+	
+
+
+	'''end = end - timeDelta
 	print end
 	history2 = oanda.get_history(instrument = pair, granularity=granularity, count = count,candleFormat=midpoint, end=end.isoformat('T'))
 
@@ -43,6 +49,26 @@ def getData(pair, timeframe):
 	end = end - timeDelta
 	print end
 	history4 = oanda.get_history(instrument = pair, granularity=granularity, count = count,candleFormat=midpoint, end=end.isoformat('T'))
+'''
+	
+	while numDataPoints > 0:
+		print end
+		
+		
+		history = oanda.get_history(instrument = pair, granularity=granularity, count = count, start = start.isoformat("T"), end = end.isoformat("T"))
+		numDataPoints -= count
+		if numDataPoints < count:
+			count = numDataPoints
+			
+
+		
+
+
+
+
+
+
+
 	#print history
 	#print history["instrument"]
 	#print history["candles"][0]
@@ -56,7 +82,6 @@ def getData(pair, timeframe):
 	for candle in history3["candles"]:
 		file.write(str(candle['time'])+','+str(candle['openMid'])+','+str(candle['highMid'])+','+str(candle['lowMid'])+','+str(candle["closeMid"])+','+str(candle['volume'])+'\n')
 	for candle in history2["candles"]:
-		#print candle["closeBid"]
 		file.write(str(candle['time'])+','+str(candle['openMid'])+','+str(candle['highMid'])+','+str(candle['lowMid'])+','+str(candle["closeMid"])+','+str(candle['volume'])+'\n')
 	for candle in history["candles"]:
 		file.write(str(candle['time'])+','+str(candle['openMid'])+','+str(candle['highMid'])+','+str(candle['lowMid'])+','+str(candle["closeMid"])+','+str(candle['volume'])+'\n')	
@@ -67,4 +92,4 @@ def getData(pair, timeframe):
 	#	json.dumps(json.load(history), f)
 	#oanda.get_autochartist()
 
-
+getData("EUR_USD", "H1", 22000)
