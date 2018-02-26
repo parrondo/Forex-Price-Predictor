@@ -43,7 +43,7 @@ def normalise_windows(window_data):
         normalised_data.append(normalised_window)
     return normalised_data
 
-def build_model(layers):
+def build_model(layers, X_train, y_train):
     model = Sequential()
 
     model.add(LSTM(
@@ -61,6 +61,8 @@ def build_model(layers):
     start = time.time()
     model.compile(loss="mse", optimizer="rmsprop")
     print "Compilation Time : ", time.time() - start
+    model.fit(X_train, y_train, batch_size=512, epochs = 5, validation_split=0.05) 
+    model.save('models/lstm.h5')
     return model
 
 def predict_point_by_point(model, data):
