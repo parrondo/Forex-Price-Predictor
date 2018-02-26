@@ -10,11 +10,11 @@ def main():
 	pair = ""
 	timeframe = ""
 	dataFile = 'data/USD_JPY_H1_history2.csv'
+	epochs = 3
 	X_train, y_train, X_test, y_test = models.lstm.load_data(dataFile, 50, True)
-	#= lstm.load_data(pair+'_'+timeframe+'_'+'history2.csv', 50, True)
-	
+		
 	layers = [1,50,100,1]	
-	model = models.lstm.build_model(layers, X_train, y_train)
+	model = models.lstm.build_model(layers, X_train, y_train, epochs)
 		
 	prediction = models.lstm.predict_point_by_point(model, X_test)
 #	print "X_test"
@@ -30,7 +30,7 @@ def main():
 	
 	inputs = []
 	i = 0
-	for line in reversed(open(dataFile).readlines()): #open(pair+'_'+timeframe+'_'+'history2.csv').readlines()):
+	for line in reversed(open(dataFile).readlines()): 
 		if i == 0:
 			line.rstrip()  #ignoring since candle is incomplete
 		else:
@@ -38,6 +38,7 @@ def main():
 		i += 1
 		if i == 51:
 			break
+
 	print "Inputs"
 	print inputs
 	inputs.reverse()
@@ -52,9 +53,9 @@ def main():
 	print "Reshaped inputs"
 	print inputs
 
-	return model.predict(inputs ), p0
-
-def predictNext(pair, timeframe):
+	print model.predict(inputs ), p0
+	#predictNext()
+def predictNext():
 	#getData2.getData(pair, timeframe)
 	predicted, p0 = main(pair, timeframe)
 	print "predicted"

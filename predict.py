@@ -11,9 +11,10 @@ import numpy as np
 def main():
 	pair = ""
 	timeframe = ""
+	inputs = ""
 	modelPath = 'models/lstm.h5'
 	model = keras.models.load_model(modelPath)
-	return model.predict(inputs ), p0
+	print(model.predict(inputs ), p0
 
 def predictNext(pair, timeframe):
 	#getData2.getData(pair, timeframe)

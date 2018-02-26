@@ -43,25 +43,21 @@ def normalise_windows(window_data):
         normalised_data.append(normalised_window)
     return normalised_data
 
-def build_model(layers, X_train, y_train):
+def build_model(layers, X_train, y_train, epochs):
     model = Sequential()
 
-    model.add(LSTM(
-        input_dim=layers[0],
-        output_dim=layers[1],
-        return_sequences=True))
+    model.add(LSTM(units=50, input_shape=(None,1), return_sequences=True))
     model.add(Dropout(0.25))
-    model.add(LSTM(
-        layers[2],
-        return_sequences=False))
+    model.add(LSTM(100, return_sequences=False))
     model.add(Dropout(0.25))
-    model.add(Dense(
-        output_dim=layers[3]))
+    model.add(Dense(units=1))
     model.add(Activation("linear"))
+
     start = time.time()
     model.compile(loss="mse", optimizer="rmsprop")
     print "Compilation Time : ", time.time() - start
-    model.fit(X_train, y_train, batch_size=512, epochs = 5, validation_split=0.05) 
+    model.fit(X_train, y_train, batch_size=512, epochs = epochs, validation_split=0.05) 
+
     model.save('models/lstm.h5')
     return model
 
