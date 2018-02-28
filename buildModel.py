@@ -4,7 +4,6 @@ from keras.layers.recurrent import LSTM
 from keras.models import Sequential
 import models.lstm, time
 import numpy as np
-#import getData2
 
 def main():
 	pair = ""
@@ -15,7 +14,7 @@ def main():
 		
 	layers = [1,50,100,1]	
 	model = models.lstm.build_model(layers, X_train, y_train, epochs)
-		
+'''		
 	prediction = models.lstm.predict_point_by_point(model, X_test)
 #	print "X_test"
 #	print X_test
@@ -27,7 +26,7 @@ def main():
 	print "prediction[0]"
 	print prediction[0]
 	
-	
+
 	inputs = []
 	i = 0
 	for line in reversed(open(dataFile).readlines()): 
@@ -55,6 +54,7 @@ def main():
 
 	print model.predict(inputs ), p0
 	#predictNext()
+
 def predictNext():
 	#getData2.getData(pair, timeframe)
 	predicted, p0 = main(pair, timeframe)
@@ -63,7 +63,7 @@ def predictNext():
 	print "De-Normalised prediction"  #pi = p0(ni + 1)
 	denormalised = p0*(predicted[0][0] + 1)
 	print denormalised
-	return predicted[0][0], denormalised	
+	return predicted[0][0], denormalised	'''
 
 if __name__ == "__main__":
 	main()
