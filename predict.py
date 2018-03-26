@@ -16,6 +16,7 @@ def main():
 	model = load_model(modelPath)
 
 	normalizedInput, p0  = normalize(inputs)
+	#print normalizedInput,p0
 	reshapedInput = np.reshape(normalizedInput, (1,50,1))
 
 	normalizedPrediction = predict(model, reshapedInput)

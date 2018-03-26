@@ -15,7 +15,7 @@ if (environment == "live"):
 	account = config['liveAccount']
 	access_token = config['liveToken']
 
-def getDataCSV(pair, granularity, numDataPoints, OHLCV, time):
+def getDataCSV(pair, granularity, numDataPoints, OHLCV, time, ratio):
 	oanda = oandapy.API(environment=environment, access_token=access_token)
 
 	end = datetime.utcnow()
@@ -23,7 +23,6 @@ def getDataCSV(pair, granularity, numDataPoints, OHLCV, time):
 		file = open(pair+'_'+granularity+'_'+str(numDataPoints)+'_OHLCV.csv', 'w')
 	else:
 		file = open(pair+'_'+granularity+'_'+str(numDataPoints)+'.csv', 'w')
-		
 	#can get max 5k datapoints in 1 call to the API
 	count = 5000
 	data = []
@@ -60,13 +59,18 @@ def main():
 		OHLCV = True
 	else:
 		OHLCV = False
+    ratio = raw_input("Position ratio? (y/n): ")
+    if (ratio == 'y'):
+        ratio = True
+    else:
+        ratio = False
 	time = raw_input("Time? (y/n): ")
 	if (time == 'y'):
 		time = True
 	else:
 		time = False
-	getDataCSV(pair, granularity, int(numDataPoints), OHLCV, time)
-
+	getDataCSV(pair, granularity, int(numDataPoints), OHLCV, time, ratio)
+    #use pandas to get data and merge with the time as 
 		
 if __name__ == "__main__":
 	main()

@@ -54,13 +54,13 @@ def build_model(layers, X_train, y_train, epochs):
     model.add(Activation("linear"))
 
     start = time.time()
-    model.compile(loss="mse", optimizer="rmsprop")
+    model.compile(loss="mse", optimizer="rmsprop", metrics=['mse', 'mae', 'mape'])
     print "Compilation Time : ", time.time() - start
     model.fit(X_train, y_train, batch_size=512, epochs = epochs, validation_split=0.05) 
 
-    model.save('models/lstm.h5')
+   
     return model
-
+'''
 def predict_point_by_point(model, data):
     predicted = model.predict(data)
     print data[0]
@@ -97,3 +97,4 @@ def predict_sequences_multiple(model, data, window_size, prediction_len):
             curr_frame = np.insert(curr_frame, [window_size-1], predicted[-1], axis=0)
         prediction_seqs.append(predicted)
     return prediction_seqs
+'''

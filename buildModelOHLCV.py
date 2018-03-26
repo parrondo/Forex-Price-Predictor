@@ -2,19 +2,19 @@
 from keras.layers.core import Dense, Activation, Dropout
 from keras.layers.recurrent import LSTM
 from keras.models import Sequential
-import models.lstm, time
+import models.OHLCV_LSTM2, time
 import numpy as np
 
 def main():
 	pair = ""
 	timeframe = ""
-	dataFile = 'data/EUR_USD_H1_40000.csv'
-	epochs = 50
-	X_train, y_train, X_test, y_test = models.lstm.load_data(dataFile, 50, True)
+	dataFile = 'data/USD_JPY_H1_40000_OHLCV2.csv'
+	epochs = 25
+	X_train, y_train, X_test, y_test = models.OHLCV_LSTM2.load_data(dataFile, 50, True)
 		
 	layers = [1,50,100,1]	
-	model = models.lstm.build_model(layers, X_train, y_train, epochs)
-	model.save('models/EUR_USD_H1_lstm.h5')
+	model = models.OHLCV_LSTM2.build_model(layers, X_train, y_train, epochs)
+	model.save('models/USD_JPY_H1_OHLCV_40000_lstm.h5')
 '''		
 	prediction = models.lstm.predict_point_by_point(model, X_test)
 #	print "X_test"
