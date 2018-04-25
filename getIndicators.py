@@ -195,4 +195,3 @@ def getAllIndicators(df):
     getCycleIndicators(df)
     
 
-
